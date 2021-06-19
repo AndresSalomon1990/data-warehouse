@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <%- include('./partials/head.ejs') %>
+
+  <script type="text/javascript" src="/js/contacts/vars.js" defer></script>
+  <script type="text/javascript" src="/js/contacts/table.js" defer></script>
+  <script type="text/javascript" src="/js/contacts/create.js" defer></script>
+  <script type="text/javascript" src="/js/contacts/edit.js" defer></script>
+  <script type="text/javascript" src="/js/contacts/delete.js" defer></script>
+  
+</head>
+<body>
+  
+  <%- include('./partials/nav.ejs') %>
+
+  <main>
+    <div class="container">
+      <h1>Contactos</h1>
+
+      <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light modal-trigger blue lighten-2" href="#create-contact-modal" title="Añadir contacto">
+          <i class="large material-icons">person_add</i>
+        </a>
+      </div>
+
+      <!-- Toolbar to select export scope -->
+      <div id="toolbar" class="input-field" style="margin: 0;" title="Formas de exportar">
+        <select>
+          <option value="selected">Exportar selección</option>
+          <option value="">Exportar vista</option>
+          <option value="all">Exportar todos</option>
+        </select>
+      </div>
+      
+      <div class="row">
+        <span class="new badge red" id="rows-selected" data-badge-caption="seleccionados" style="display: none;"></span>
+      </div>
+      
+      <!-- Table containing contacts data -->
+      <table
+        id="contacts-table"
+        data-toolbar="#toolbar"
+        data-show-refresh="true"
+        data-show-toggle="true"
+        data-show-fullscreen="true"
+        data-show-columns="true"
+        data-toggle="table"
+        data-show-export="true"
+        data-show-pagination-switch="true"
+        data-show-footer="true"
+        data-id-field="_id"
+        data-search="true"
+        data-search-align="right"
+        data-advanced-search="true"
+        data-id-table="advancedTable"
+        data-pagination="true"
+        data-locale="es-AR"
+        data-maintain-meta-data="true"
+        data-mobile-responsive="true"
+        data-click-to-select="true"
+        data-buttons="buttons"
+        data-ajax="ajaxRequest">
+      </table>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Create contact modal -->
+    <div id="create-contact-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Crear contacto</b></h2>
+        </div>
+        <div class="row">
+          <form class="col s12" id="create-contact-form">
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="Nombre" id="create-user-name" type="text" class="validate" name="name" required>
+                <label for="create-user-name">Nombre</label>
+                <span class="helper-text" id="create-contact-name-error"></span>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="Apellido" id="create-user-lname" type="text" class="validate" name="lname" required>
+                <label for="create-user-lname">Apellido</label>
+                <span class="helper-text" id="create-contact-lname-error"></span>
+              </div>
+              <div class="input-field col s4">
+                <input class="validate" type="email" id="create-contact-email" placeholder="Email" name="email" required>
+                <label for="create-contact-email">Email</label>
+                <span class="helper-text" id="create-contact-email-error"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <select name="company" title="Compañía" id="create-contact-company-select" required>
+                  <option value="" disabled selected>Elija una compañía</option>
+                </select>
+                <label>Compañía</label>
+                <span class="helper-text" id="create-contact-company-error"></span>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Cargo" id="create-user-position" type="text" class="validate" name="position" required>
+                <label for="create-user-position">Cargo</label>
+                <span class="helper-text" id="create-contact-position-error"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <select name="region" title="Región" id="create-contact-region-select" required>
+                  <option value="" disabled selected>Elija una región</option>
+                </select>
+                <label>Región</label>
+                <span class="helper-text" id="create-contact-region-error"></span>
+              </div>
+              <div class="input-field col s4">
+                <select name="country" title="País" id="create-contact-country-select" disabled required>
+                  <option value="" disabled selected>Elija un país</option>
+                </select>
+                <label>País</label>
+                <span class="helper-text" id="create-contact-country-error"></span>
+              </div>
+              <div class="input-field col s4">
+                <select name="city" title="Ciudad" id="create-contact-city-select" disabled required>
+                  <option value="" disabled selected>Elija una ciudad</option>
+                </select>
+                <label>Ciudad</label>
+                <span class="helper-text" id="create-contact-city-error"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s8">
+                <input placeholder="Dirección" id="create-user-address" type="text" class="validate" name="address" required>
+                <label for="create-user-address">Dirección</label>
+                <span class="helper-text" id="create-contact-address-error"></span>
+              </div>
+              <p class="range-field col s4">
+                <label for="create-user-interest">Interés</label>
+                <input type="range" id="create-user-interest" min="0" max="100" step="25" name="interest" required>
+              </p>
+            </div>
+            
+            <!-- Contact channels -->
+
+            <div class="row">
+              <h4><b>Canales de contacto</b></h4>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="" value="Whatsapp" type="text" class="validate" name="contactChannelWhatsapp" required disabled>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="123-4567890" id="create-user-account-whatsapp" type="text" class="validate" name="userAccountWhatsapp">
+                <label for="create-user-account-whatsapp">Cuenta de usuario</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="preferenceWhatsapp" title="Preferencias">
+                  <option value="Sin preferencia" selected>Sin preferencia</option>
+                  <option value="Canal favorito">Canal favorito</option>
+                  <option value="No molestar">No molestar</option>
+                </select>
+                <label>Preferencia</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="" value="Facebook" type="text" class="validate" name="contactChannelFacebook" disabled>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="/ejemplo" id="create-user-account-facebook" type="text" class="validate" name="userAccountFacebook">
+                <label for="create-user-account-facebook">Cuenta de usuario</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="preferenceFacebook" title="Preferencias">
+                  <option value="Sin preferencia" selected>Sin preferencia</option>
+                  <option value="Canal favorito">Canal favorito</option>
+                  <option value="No molestar">No molestar</option>
+                </select>
+                <label>Preferencia</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="" value="Instagram" type="text" class="validate" name="contactChannelInstagram" disabled>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="@ejemplo" id="create-user-account-instagram" type="text" class="validate" name="userAccountInstagram">
+                <label for="create-user-account-instagram">Cuenta de usuario</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="preferenceInstagram" title="Preferencias">
+                  <option value="Sin preferencia" selected>Sin preferencia</option>
+                  <option value="Canal favorito">Canal favorito</option>
+                  <option value="No molestar">No molestar</option>
+                </select>
+                <label>Preferencia</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="" value="Twitter" type="text" class="validate" name="contactChannelTwitter" disabled>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="@ejemplo" id="create-user-account-twitter" type="text" class="validate" name="userAccountTwitter">
+                <label for="create-user-account-twitter">Cuenta de usuario</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="preferenceTwitter" title="Preferencias">
+                  <option value="Sin preferencia" selected>Sin preferencia</option>
+                  <option value="Canal favorito">Canal favorito</option>
+                  <option value="No molestar">No molestar</option>
+                </select>
+                <label>Preferencia</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row center-align">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Añadir contacto">Añadir</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+    
+
+    <!-- Edit contact modal -->
+    <div id="edit-contact-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Editar contacto</b></h2>
+        </div>
+        <div class="row">
+          <form class="col s12" id="edit-contact-form">
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="Nombre" id="edit-user-name" type="text" class="validate" name="name" required>
+                <label for="edit-user-name">Nombre</label>
+                <span class="helper-text" id="edit-contact-name-error"></span>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="Apellido" id="edit-user-lname" type="text" class="validate" name="lname" required>
+                <label for="edit-user-lname">Apellido</label>
+                <span class="helper-text" id="edit-contact-lname-error"></span>
+              </div>
+              <div class="input-field col s4">
+                <input class="validate" type="email" id="edit-contact-email" placeholder="Email" name="email" required>
+                <label for="edit-contact-email">Email</label>
+                <span class="helper-text" id="edit-contact-email-error"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <select name="company" title="Compañía" id="edit-contact-company-select" required>
+                  <option value="" disabled selected>Elija una compañía</option>
+                </select>
+                <label>Compañía</label>
+                <span class="helper-text" id="edit-contact-company-error"></span>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Cargo" id="edit-user-position" type="text" class="validate" name="position" required>
+                <label for="edit-user-position">Cargo</label>
+                <span class="helper-text" id="edit-contact-position-error"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <select name="region" title="Región" id="edit-contact-region-select" required>
+                  <option value="" disabled selected>Elija una región</option>
+                </select>
+                <label>Región</label>
+                <span class="helper-text" id="edit-contact-region-error"></span>
+              </div>
+              <div class="input-field col s4">
+                <select name="country" title="País" id="edit-contact-country-select" disabled required>
+                  <option value="" disabled selected>Elija un país</option>
+                </select>
+                <label>País</label>
+                <span class="helper-text" id="edit-contact-country-error"></span>
+              </div>
+              <div class="input-field col s4">
+                <select name="city" title="Ciudad" id="edit-contact-city-select" disabled required>
+                  <option value="" disabled selected>Elija una ciudad</option>
+                </select>
+                <label>Ciudad</label>
+                <span class="helper-text" id="edit-contact-city-error"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s8">
+                <input placeholder="Dirección" id="edit-user-address" type="text" class="validate" name="address" required>
+                <label for="edit-user-address">Dirección</label>
+                <span class="helper-text" id="edit-contact-address-error"></span>
+              </div>
+              <p class="range-field col s4">
+                <label for="edit-user-interest">Interés</label>
+                <input type="range" id="edit-user-interest" min="0" max="100" step="25" name="interest" required>
+              </p>
+            </div>
+            
+            <!-- Contact channels -->
+
+            <div class="row">
+              <h4><b>Canales de contacto</b></h4>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="" value="Whatsapp" type="text" class="validate" name="contactChannelWhatsapp" required disabled>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="123-4567890" id="edit-user-account-whatsapp" type="text" class="validate" name="userAccountWhatsapp">
+                <label for="edit-user-account-whatsapp">Cuenta de usuario</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="preferenceWhatsapp" id="edit-user-preference-whatsapp" title="Preferencias">
+                  <option value="Sin preferencia">Sin preferencia</option>
+                  <option value="Canal favorito">Canal favorito</option>
+                  <option value="No molestar">No molestar</option>
+                </select>
+                <label>Preferencia</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="" value="Facebook" type="text" class="validate" name="contactChannelFacebook" disabled>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="/ejemplo" id="edit-user-account-facebook" type="text" class="validate" name="userAccountFacebook">
+                <label for="edit-user-account-facebook">Cuenta de usuario</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="preferenceFacebook" id="edit-user-preference-facebook" title="Preferencias">
+                  <option value="Sin preferencia">Sin preferencia</option>
+                  <option value="Canal favorito">Canal favorito</option>
+                  <option value="No molestar">No molestar</option>
+                </select>
+                <label>Preferencia</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="" value="Instagram" type="text" class="validate" name="contactChannelInstagram" disabled>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="@ejemplo" id="edit-user-account-instagram" type="text" class="validate" name="userAccountInstagram">
+                <label for="edit-user-account-instagram">Cuenta de usuario</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="preferenceInstagram" id="edit-user-preference-instagram" title="Preferencias">
+                  <option value="Sin preferencia">Sin preferencia</option>
+                  <option value="Canal favorito">Canal favorito</option>
+                  <option value="No molestar">No molestar</option>
+                </select>
+                <label>Preferencia</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="" value="Twitter" type="text" class="validate" name="contactChannelTwitter" disabled>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="@ejemplo" id="edit-user-account-twitter" type="text" class="validate" name="userAccountTwitter">
+                <label for="edit-user-account-twitter">Cuenta de usuario</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="preferenceTwitter" id="edit-user-preference-twitter" title="Preferencias">
+                  <option value="Sin preferencia">Sin preferencia</option>
+                  <option value="Canal favorito">Canal favorito</option>
+                  <option value="No molestar">No molestar</option>
+                </select>
+                <label>Preferencia</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row center-align">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Editar contacto">Guardar</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Delete contact modal -->
+    <div id="delete-contact-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Eliminar contacto</b></h2>
+        </div>
+  
+        <div class="row">
+          <h3>Confirme la eliminación del contacto: <span><i id="delete-contact-email-confirmation"></i></span></h3>
+        </div>
+
+        <div class="row center-align">
+          <button class="btn waves-effect waves-light red accent-2 hoverable" title="Eliminar contacto" id="delete-contact-button">Eliminar</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect waves-light grey" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Delete many contacts modal -->
+    <div id="delete-many-contact-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Eliminar contactos seleccionados</b></h2>
+        </div>
+  
+        <div class="row">
+          <h3>Confirme la eliminación de los contactos seleccionados</h3>
+        </div>
+
+        <div class="row center-align">
+          <button class="btn waves-effect waves-light red accent-2 hoverable" title="Eliminar contactos" id="delete-many-contact-button">Eliminar</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect waves-light grey" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+    
+  </main>
+  
+  <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>

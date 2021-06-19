@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <%- include('./partials/head.ejs') %>
+  
+  <script type="text/javascript" src="/js/users/vars.js" defer></script>
+  <script type="text/javascript" src="/js/users/table.js" defer></script>
+  <script type="text/javascript" src="/js/users/create.js" defer></script>
+  <script type="text/javascript" src="/js/users/edit.js" defer></script>
+  <script type="text/javascript" src="/js/users/delete.js" defer></script>
+</head>
+<body>
+
+  <%- include('./partials/nav.ejs') %>
+  
+  <main>
+    <div class="container">
+      <h1>Usuarios</h1>
+
+      <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light modal-trigger blue lighten-2" href="#create-user-modal" title="Añadir usuario">
+          <i class="large material-icons">person_add</i>
+        </a>
+      </div>
+    
+      <!-- Table containing users data -->
+      <table
+        id="users-table"
+        data-show-refresh="true"
+        data-show-toggle="true"
+        data-show-fullscreen="true"
+        data-show-columns="true"
+        data-toggle="table"
+        data-show-export="true"
+        data-show-pagination-switch="true"
+        data-show-footer="true"
+        data-id-field="_id"
+        data-search="true"
+        data-search-align="left"
+        data-advanced-search="true"
+        data-id-table="advancedTable"
+        data-pagination="true"
+        data-locale="es-AR"
+        data-maintain-meta-data="true"
+        data-mobile-responsive="true"
+        data-ajax="ajaxRequest">
+        <thead>
+          <tr>
+            <th data-field="_id" data-visible="false" data-searchable="false" data-switchable="false">ID</th>
+            <th data-field="name" data-sortable="true">Nombre</th>
+            <th data-field="lname" data-sortable="true">Apellido</th>
+            <th data-field="email" data-sortable="true">Email</th>
+            <th data-field="profile" data-sortable="true">Perfil</th>
+            <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" data-sortable="false">Acciones</th>
+          </tr>
+        </thead>
+      </table>
+
+    </div>
+    
+    <!-- MODALS -->
+    <!-- Create user modal -->
+    <div id="create-user-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Añadir usuario</b></h2>
+        </div>
+  
+        <form class="container" id="create-user-form">     
+          <div class="input-field">
+            <input class="validate" type="text" id="create-user-name" placeholder="Nombre" name="name" required>
+            <label for="create-user-name">Nombre</label>
+            <span class="helper-text" id="create-user-name-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="text" id="create-user-lname" placeholder="Apellido" name="lname" required>
+            <label for="create-user-lname">Apellido</label>
+            <span class="helper-text" id="create-user-lname-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="email" id="create-user-email" placeholder="Email" name="email" required>
+            <label for="create-user-email">Email</label>
+            <span class="helper-text" id="create-user-email-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="password" id="create-user-password" placeholder="Password" name="password" required>
+            <label for="create-user-password">Password</label>
+            <span class="helper-text" id="create-user-password-error"></span>
+          </div>
+
+          <div class="input-field col">
+            <select name="profile" title="Perfil" required>
+              <option value="" disabled selected>Choose your option</option>
+              <option value="basic">Básico</option>
+              <option value="admin">Admin</option>
+            </select>
+            <label>Perfil</label>
+            <span class="helper-text" id="create-user-profile-error"></span>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Añadir usuario">Añadir</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+    
+    <!-- Edit user modal -->
+    <div id="edit-user-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Editar usuario</b></h2>
+        </div>
+  
+        <form class="container" id="edit-user-form">     
+          <div class="input-field">
+            <input class="validate" type="text" id="edit-user-name" placeholder="Nombre" name="name" required>
+            <label for="edit-user-name">Nombre</label>
+            <span class="helper-text" id="edit-user-name-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="text" id="edit-user-lname" placeholder="Apellido" name="lname" required>
+            <label for="edit-user-lname">Apellido</label>
+            <span class="helper-text" id="edit-user-lname-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="email" id="edit-user-email" placeholder="Email" name="email" required>
+            <label for="edit-user-email">Email</label>
+            <span class="helper-text" id="edit-user-email-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="password" id="edit-user-password" placeholder="Password" name="password" required>
+            <label for="edit-user-password">Password</label>
+            <span class="helper-text" id="edit-user-password-error"></span>
+          </div>
+
+          <div class="input-field col">
+            <select name="profile" title="Perfil" required>
+              <option value="" disabled selected>Choose your option</option>
+              <option value="basic">Básico</option>
+              <option value="admin">Admin</option>
+            </select>
+            <label>Perfil</label>
+            <span class="helper-text" id="edit-user-profile-error"></span>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Guardar usuario">Guardar</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+  
+    <!-- Delete user modal -->
+    <div id="delete-user-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Eliminar usuario</b></h2>
+        </div>
+  
+        <div class="row">
+          <h3>Confirme la eliminación del usuario: <span><i id="delete-user-email-confirmation"></i></span></h3>
+        </div>
+
+        <div class="row center-align">
+          <button class="btn waves-effect waves-light red accent-2 hoverable" title="Eliminar usuario" id="delete-user-button">Eliminar</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect waves-light grey" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+  </main>
+  
+  <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>

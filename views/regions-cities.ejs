@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <%- include('./partials/head.ejs') %>
+
+  <script type="text/javascript" src="/js/regions-cities/vars.js" defer></script>
+  <script type="text/javascript" src="/js/regions-cities/actionButtons.js" defer></script>
+  <script type="text/javascript" src="/js/regions-cities/create.js" defer></script>
+  <script type="text/javascript" src="/js/regions-cities/edit.js" defer></script>
+  <script type="text/javascript" src="/js/regions-cities/delete.js" defer></script>
+
+</head>
+<body>
+  
+  <%- include('./partials/nav.ejs') %>
+
+  <main>
+
+    <div class="container">
+      <h1>Regiones / Ciudades</h1>
+
+      <!-- Button create region -->
+      <div class="row">
+        <div class="col m-4 s12 right-align">
+          <a class="btn waves-effect waves-light modal-trigger blue lighten-2" href="#create-region-modal" title="Añadir región">
+            Añadir región <i class="large material-icons right">language</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Tree -->
+      <div class="row">
+        <div class="col m8 s12">
+          <ul class="collapsible">
+            <% regions.forEach(region => { %>
+              <li>
+                <div class="collapsible-header" data-id="<%= region._id %>" data-name="<%= region.name %>">
+                  <h5 style="margin-right: auto;"><b><%= region.name %></b></h5>
+                  <a class="create-country waves-effect btn-small waves-light modal-trigger blue lighten-2 right-align" href="#create-country-modal" title="Añadir país"><i class="material-icons">control_point</i></a>
+                  <a class="edit-region waves-effect btn-small waves-light right-align" href="#" title="Editar"><i class="material-icons">create</i></a>
+                  <a class="delete-region waves-effect btn-small waves-light red accent-2" href="#" title="Eliminar"><i class="material-icons">clear</i></a>
+                </div>
+                <!-- Countries -->
+                <div class="collapsible-body">
+                  <ul class="collapsible">
+                    <% region.countries.forEach(country => { %>
+                      <li>
+                        <div class="country collapsible-header" data-regionName="<%= region.name %>" data-id="<%= country._id %>" data-name="<%= country.name %>">
+                          <h6 style="margin-right: auto;"><%= country.name %></h6>
+                          <a class="create-city waves-effect btn-small waves-light blue lighten-2" href="#" title="Añadir ciudad"><i class="material-icons">control_point</i></a>
+                          <a class="edit-country waves-effect btn-small waves-light" href="#" title="Editar"><i class="material-icons">create</i></a>
+                          <a class="delete-country waves-effect btn-small waves-light red accent-2" href="#" title="Eliminar"><i class="material-icons">clear</i></a>
+                        </div>
+                        <!-- Cities -->
+                        <div class="collapsible-body">
+                          <ul class="collapsible">
+                            <% country.cities.forEach(city => { %>
+                              <li>
+                                <div class="collapsible-header" data-countryId="<%= country._id %>" data-countryName="<%= country.name %>" data-id="<%= city._id %>" data-name="<%= city.name %>">
+                                  <span style="margin-right: auto;"><%= city.name %></span>
+                                  <a class="edit-city waves-effect btn-small waves-light" href="#" title="Editar"><i class="material-icons">create</i></a>
+                                  <a class="delete-city waves-effect btn-small waves-light red accent-2" href="#" title="Eliminar"><i class="material-icons">clear</i></a>
+                                </div>
+                              </li>
+                            <% }) %>
+                          </ul>
+                        </div>
+                      </li>
+                    <% }) %>
+                  </ul>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    
+    <!-- REGION MODALS -->
+    <!-- Create region modal -->
+    <div id="create-region-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Añadir región</b></h2>
+        </div>
+  
+        <form class="container" id="create-region-form">     
+          <div class="input-field">
+            <input class="validate" type="text" id="create-region-name" placeholder="Región" name="name" required>
+            <label for="create-region-name">Región</label>
+            <span class="helper-text" id="create-region-name-error"></span>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Añadir región">Añadir</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Edit region modal -->
+    <div id="edit-region-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Editar región</b></h2>
+        </div>
+  
+        <form class="container" id="edit-region-form">     
+          <div class="input-field">
+            <input class="validate" type="text" id="edit-region-name" placeholder="Región" name="name" required>
+            <label for="edit-region-name">Región</label>
+            <span class="helper-text" id="edit-region-name-error"></span>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Editar región">Guardar</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Delete region modal -->
+    <div id="delete-region-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Eliminar región</b></h2>
+        </div>
+  
+        <div class="row">
+          <h3>Confirme la eliminación de la región: <span><i id="delete-region-name"></i></span></h3>
+        </div>
+
+        <div class="row center-align">
+          <button class="btn waves-effect waves-light red accent-2 hoverable" title="Eliminar país" id="delete-region-button">Eliminar</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect waves-light grey" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- COUNTRY MODALS -->
+    <!-- Create country modal -->
+    <div id="create-country-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Añadir país</b></h2>
+        </div>
+  
+        <form class="container" id="create-country-form">
+          <div class="input-field">
+            <input class="validate" type="text" id="create-country-name" placeholder="País" name="name" required>
+            <label for="create-country-name">País</label>
+            <span class="helper-text" id="create-country-name-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input disabled placeholder="Region" value="" type="text" id="create-country-region-disabled" name="region">
+            <label for="create-country-region-disabled">Region</label>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Añadir país">Añadir</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Edit country modal -->
+    <div id="edit-country-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Editar país</b></h2>
+        </div>
+  
+        <form class="container" id="edit-country-form">
+          <div class="input-field">
+            <input class="validate" type="text" id="edit-country-name" placeholder="País" name="name" required>
+            <label for="edit-country-name">País</label>
+            <span class="helper-text" id="edit-country-name-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input disabled placeholder="Region" value="" type="text" id="edit-country-region-disabled" name="region">
+            <label for="edit-country-region-disabled">Region</label>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Guardar país">Guardar</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Delete country modal -->
+    <div id="delete-country-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Eliminar país</b></h2>
+        </div>
+  
+        <div class="row">
+          <h3>Confirme la eliminación del país: <span><i id="delete-country-name"></i></span></h3>
+        </div>
+
+        <div class="row center-align">
+          <button class="btn waves-effect waves-light red accent-2 hoverable" title="Eliminar país" id="delete-country-button">Eliminar</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect waves-light grey" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- CITY MODALS -->
+    <!-- Create city modal -->
+    <div id="create-city-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Añadir ciudad</b></h2>
+        </div>
+  
+        <form class="container" id="create-city-form">
+          <div class="input-field">
+            <input class="validate" type="text" id="create-city-name" placeholder="Ciudad" name="name" required>
+            <label for="create-city-name">Ciudad</label>
+            <span class="helper-text" id="create-city-name-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input disabled placeholder="País" value="" type="text" id="create-city-country-disabled" name="country">
+            <label for="create-city-country-disabled">País</label>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Añadir ciudad">Añadir</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Edit city modal -->
+    <div id="edit-city-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Editar ciudad</b></h2>
+        </div>
+  
+        <form class="container" id="edit-city-form">
+          <div class="input-field">
+            <input class="validate" type="text" id="edit-city-name" placeholder="Ciudad" name="name" required>
+            <label for="edit-city-name">Ciudad</label>
+            <span class="helper-text" id="edit-city-name-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input disabled placeholder="País" value="" type="text" id="edit-city-country-disabled" name="country">
+            <label for="edit-city-country-disabled">País</label>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Guardar ciudad">Guardar</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Delete city modal -->
+    <div id="delete-city-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Eliminar ciudad</b></h2>
+        </div>
+  
+        <div class="row">
+          <h3>Confirme la eliminación de la ciudad: <span><i id="delete-city-name"></i></span></h3>
+        </div>
+
+        <div class="row center-align">
+          <button class="btn waves-effect waves-light red accent-2 hoverable" title="Eliminar ciudad" id="delete-city-button">Eliminar</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect waves-light grey" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+  </main>
+
+  <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>

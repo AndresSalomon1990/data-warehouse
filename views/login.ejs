@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <%- include('./partials/head.ejs') %>
+
+  <script type="text/javascript" src="/js/login.js" defer></script>
+</head>
+<body>
+
+  <%- include('./partials/nav.ejs') %>
+
+  <main>
+
+    <div class="container row">
+      <div class="col center-align l6 m-10 s12 push-l3 card">
+        <h2>Log in</h2>
+        <form class="container" id="login-form">
+          <div class="input-field">
+            <input class="validate" type="email" id="login-email" name="email" required>
+            <label for="login-email">Email</label>
+            <span class="helper-text" id="login-email-error"></span>
+          </div>
+          <div class="input-field">
+            <input class="validate" type="password" id="login-password" name="password" required>
+            <label for="login-password">Password</label>
+            <span class="helper-text" id="login-password-error"></span>
+          </div>
+          <div class="row">
+            <button class="btn waves-effect waves-light" type="submit">LOG IN<i class="material-icons right">send</i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+    
+  <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>

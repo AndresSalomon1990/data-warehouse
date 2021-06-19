@@ -1,0 +1,75 @@
+<header>
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <a href="/" class="brand-logo"> <i class="material-icons">library_books</i> LOGO</a>
+        <a href="#" data-target="navbar-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <% if (user) { %>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+            <% if (user.profile === 'admin') { %>
+              <% if (title === 'Users') { %>
+                  <li class="active"><a href="/users">Usuarios</a></li>
+                <% } else { %>
+                  <li><a href="/users">Usuarios</a></li>
+                <% } %>
+            <% } %>
+
+            <% if (title === 'Contacts') { %>
+              <li class="active"><a href="/contacts">Contactos</a></li>
+            <% } else { %>
+              <li><a href="/contacts">Contactos</a></li>
+            <% } %>
+
+            <% if (title === 'Companies') { %>
+              <li class="active"><a href="/companies">Compañías</a></li>
+            <% } else { %>
+              <li><a href="/companies">Compañías</a></li>
+            <% } %>
+
+            <% if (title === 'Regions / Cities') { %>
+              <li class="active"><a href="/regions-cities">Regiones / Ciudades</a></li>
+            <% } else { %>
+              <li><a href="/regions-cities">Regiones / Ciudades</a></li>
+            <% } %>
+
+            <li><a href="/logout" class="teal">Logout <i class="material-icons right">exit_to_app</i></a></li>
+          </ul>
+        <% } %>
+      </div>
+    </nav>
+  </div>
+</header>  
+
+<!-- Siderbar mobile -->
+<% if (user) { %>
+  <ul class="sidenav" id="navbar-mobile">
+    <% if (title === 'Regions / Cities') { %>
+      <li class="active"><a href="/regions-cities">Regiones / Ciudades</a></li>
+    <% } else { %>
+      <li><a href="/regions-cities">Regiones / Ciudades</a></li>
+    <% } %>
+
+    <% if (title === 'Companies') { %>
+      <li class="active"><a href="/companies">Compañías</a></li>
+    <% } else { %>
+      <li><a href="/companies">Compañías</a></li>
+    <% } %>
+
+    <% if (title === 'Contacts') { %>
+      <li class="active"><a href="/contacts">Contactos</a></li>
+    <% } else { %>
+      <li><a href="/contacts">Contactos</a></li>
+    <% } %>
+
+    <% if (user.profile === 'admin') { %>
+      <% if (title === 'Users') { %>
+        <li class="active"><a href="/users">Usuarios</a></li>
+      <% } else { %>
+        <li><a href="/users">Usuarios</a></li>
+      <% } %>
+    <% } %>
+
+    <li><a href="/logout" class="teal">Logout <i class="material-icons right">exit_to_app</i></a></li>
+  </ul>
+<% } %>

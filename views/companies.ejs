@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <%- include('./partials/head.ejs') %>
+  
+  <script type="text/javascript" src="/js/companies/vars.js" defer></script>
+  <script type="text/javascript" src="/js/companies/table.js" defer></script>
+  <script type="text/javascript" src="/js/companies/create.js" defer></script>
+  <script type="text/javascript" src="/js/companies/edit.js" defer></script>
+  <script type="text/javascript" src="/js/companies/delete.js" defer></script>
+
+</head>
+<body>
+
+  <%- include('./partials/nav.ejs') %>
+
+  <main>
+    <div class="container">
+      <h1>Compañías</h1>
+
+      <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light modal-trigger blue lighten-2" href="#create-company-modal" title="Añadir compañía">
+          <i class="large material-icons">control_point</i>
+        </a>
+      </div>
+
+      <!-- Table containing companies data -->
+      <table
+        id="companies-table"
+        data-show-refresh="true"
+        data-show-toggle="true"
+        data-show-fullscreen="true"
+        data-show-columns="true"
+        data-toggle="table"
+        data-show-export="true"
+        data-show-pagination-switch="true"
+        data-show-footer="true"
+        data-id-field="_id"
+        data-search="true"
+        data-search-align="left"
+        data-advanced-search="true"
+        data-id-table="advancedTable"
+        data-pagination="true"
+        data-locale="es-AR"
+        data-maintain-meta-data="true"
+        data-mobile-responsive="true"
+        data-ajax="ajaxRequest">
+        <thead>
+          <tr>
+            <th data-field="_id" data-visible="false" data-searchable="false" data-switchable="false">ID</th>
+            <th data-field="name" data-sortable="true">Nombre</th>
+            <th data-field="address" data-sortable="true">Dirección</th>
+            <th data-field="email" data-sortable="true">Email</th>
+            <th data-field="phone" data-sortable="true">Teléfono</th>
+            <th data-field="region.name" data-sortable="true">Región</th>
+            <th data-field="country.name" data-sortable="true">País</th>
+            <th data-field="city.name" data-sortable="true">Ciudad</th>
+            <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" data-sortable="false">Acciones</th>
+          </tr>
+        </thead>
+      </table>
+
+    </div>
+
+    <!-- MODALS -->
+    <!-- Create company modal -->
+    <div id="create-company-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Añadir compañía</b></h2>
+        </div>
+  
+        <form class="container" id="create-company-form">     
+          <div class="input-field">
+            <input class="validate" type="text" id="create-company-name" placeholder="Nombre" name="name" required>
+            <label for="create-company-name">Nombre</label>
+            <span class="helper-text" id="create-company-name-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="text" id="create-company-address" placeholder="Dirección" name="address" required>
+            <label for="create-company-address">Dirección</label>
+            <span class="helper-text" id="create-company-address-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="email" id="create-company-email" placeholder="Email" name="email" required>
+            <label for="create-company-email">Email</label>
+            <span class="helper-text" id="create-company-email-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="text" id="create-company-phone" placeholder="Teléfono" name="phone" required>
+            <label for="create-company-phone">Teléfono</label>
+            <span class="helper-text" id="create-company-phone-error"></span>
+          </div>
+
+          <div class="input-field">
+            <select name="region" title="Región" id="create-company-region-select" required>
+              <option value="" disabled selected>Elija una región</option>
+            </select>
+            <label>Región</label>
+            <span class="helper-text" id="create-company-region-error"></span>
+          </div>
+    
+          <div class="input-field">
+            <select name="country" title="País" id="create-company-country-select" disabled required>
+              <option value="" disabled selected>Elija un país</option>
+            </select>
+            <label>País</label>
+            <span class="helper-text" id="create-company-country-error"></span>
+          </div>
+    
+          <div class="input-field">
+            <select name="city" title="Ciudad" id="create-company-city-select" disabled required>
+              <option value="" disabled selected>Elija una ciudad</option>
+            </select>
+            <label>Ciudad</label>
+            <span class="helper-text" id="create-company-city-error"></span>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Añadir compañía">Añadir</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Edit company modal -->
+    <div id="edit-company-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Editar compañía</b></h2>
+        </div>
+  
+        <form class="container" id="edit-company-form">     
+          <div class="input-field">
+            <input class="validate" type="text" id="edit-company-name" placeholder="Nombre" name="name" required>
+            <label for="edit-company-name">Nombre</label>
+            <span class="helper-text" id="edit-company-name-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="text" id="edit-company-address" placeholder="Dirección" name="address" required>
+            <label for="edit-company-address">Dirección</label>
+            <span class="helper-text" id="edit-company-address-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="email" id="edit-company-email" placeholder="Email" name="email" required>
+            <label for="edit-company-email">Email</label>
+            <span class="helper-text" id="edit-company-email-error"></span>
+          </div>
+
+          <div class="input-field">
+            <input class="validate" type="text" id="edit-company-phone" placeholder="Teléfono" name="phone" required>
+            <label for="edit-company-phone">Teléfono</label>
+            <span class="helper-text" id="edit-company-phone-error"></span>
+          </div>
+
+          <div class="input-field">
+            <select name="region" title="Región" id="edit-company-region-select" required>
+              <!-- Options -->
+            </select>
+            <label>Región</label>
+            <span class="helper-text" id="edit-company-region-error"></span>
+          </div>
+    
+          <div class="input-field">
+            <select name="country" title="País" id="edit-company-country-select" required>
+              <!-- Options -->
+            </select>
+            <label>País</label>
+            <span class="helper-text" id="edit-company-country-error"></span>
+          </div>
+    
+          <div class="input-field">
+            <select name="city" title="Ciudad" id="edit-company-city-select" required>
+              <!-- Options -->
+            </select>
+            <label>Ciudad</label>
+            <span class="helper-text" id="edit-company-city-error"></span>
+          </div>
+          
+          <div class="row">
+            <button class="btn waves-effect waves-light blue lighten-2" type="submit" title="Editar compañía">Guardar</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+    <!-- Delete company modal -->
+    <div id="delete-company-modal" class="modal">
+      <div class="modal-content">
+        <div class="row">
+          <h2><b>Eliminar compañía</b></h2>
+        </div>
+  
+        <div class="row">
+          <h3>Confirme la eliminación de la compañía: <span><i id="delete-company-name-confirmation"></i></span></h3>
+        </div>
+
+        <div class="row center-align">
+          <button class="btn waves-effect waves-light red accent-2 hoverable" title="Eliminar compañía" id="delete-company-button">Eliminar</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect waves-light grey" title="Cancelar">Cancelar</a>
+      </div>
+    </div>
+
+  </main>
+  
+  <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>
