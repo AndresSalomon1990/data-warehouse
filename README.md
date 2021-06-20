@@ -18,7 +18,7 @@ data-warehouse
 |   .gitignore
 │
 └───api
-│   │   api.js
+│   └─── api.js
 │   │
 │   └───controllers
 │   │
@@ -50,7 +50,7 @@ data-warehouse
 
 ## How to use it
 
-This app was built to run on your own computer in: [http://localhost:3000/] 
+This app was built to run on your own computer in: [http://localhost:5000/] 
 
 *You can adapt it to run on a server.*
 
