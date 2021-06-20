@@ -19,7 +19,7 @@ module.exports.swaggerDefinition = {
       description: 'Development server',
     },
     {
-      url: 'https://data-clients-warehouse/',
+      url: 'https://dev-data-warehouse.herokuapp.com/',
       description: 'Production server'
   },
   ]

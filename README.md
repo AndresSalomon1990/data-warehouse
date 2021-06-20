@@ -54,6 +54,8 @@ This app was built to run on your own computer in: [http://localhost:5000/]
 
 *You can adapt it to run on a server.*
 
+Here is a live version: https://dev-data-warehouse.herokuapp.com/ - ask for credentials to test it.
+
 To start using it:
 
 1. Navigate to './api/', find the '/create-admin' path, uncommented it and create an admin user to start (can be done with Postman or other tool you want). Then comment that line again. This is necessary as it uses JWT & cookies for authentication and authorization and the users can only be created once you are logged.
