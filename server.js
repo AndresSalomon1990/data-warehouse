@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/login', apiLimiterLogin);
 app.use(cookieParser()); // access a cookie method in the response object
 app.use(express.static( __dirname + "/public"));
-app.use(favicon(path.join(__dirname, "/favicon.ico")));
+app.use(favicon(path.join(__dirname, "/public/images/logos/favicon.ico")));
 
 /* PORT - 5000 default for localhost */
 const PORT = process.env.PORT || 5000;
