@@ -77,6 +77,19 @@ const users_post = async (req, res) => {
   };
 };
 
+/* IMPORTANT */
+/* Only use this the first time with the route /create-admin */
+/* Handle users admin creation */
+const users_post_admin = async (req, res) => {
+  try {
+    const user = await User.create(req.body);
+    res.status(201).json({ user: user._id });
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors }); // send back the errors catched
+  };
+};
+
 /* Handle user update */
 const users_put = async (req, res) => {
   const user = res.locals.user; // from the checkCurrentUser middleware
@@ -132,6 +145,7 @@ module.exports = {
   users_get,
   users_get_all,
   users_post,
+  users_post_admin,
   users_put,
   users_delete
 };

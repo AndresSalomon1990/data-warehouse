@@ -13,7 +13,7 @@ const favicon = require('serve-favicon');
 /* CORS */
 const isProduction = process.env.NODE_ENV === 'production';
 const origin = {
-  origin: isProduction ? 'https://www.data-clients-warehouse.com' : 'http://localhost:3000/',
+  origin: isProduction ? 'https://dev-data-warehouse.herokuapp.com/' : 'http://localhost:3000/',
 };
 
 /* Limit to 10 wrong login in a row */
@@ -38,8 +38,8 @@ app.use(cookieParser()); // access a cookie method in the response object
 app.use(express.static( __dirname + "/public"));
 app.use(favicon(path.join(__dirname, "/public/images/logos/favicon.ico")));
 
-/* PORT - 5000 default for localhost */
-const PORT = process.env.PORT || 5000;
+/* PORT - 3000 default for localhost */
+const PORT = process.env.PORT || 3000;
 
 /* View engine */
 app.set('views', path.join(__dirname, 'views'));
